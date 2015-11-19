@@ -11,7 +11,7 @@ using namespace std;
 
 const int n=12; // horizontal size of the map
 const int m=12; // vertical size size of the map
-static int mapA[n][m];
+static int mapA[n][m] = {};
 static int closed_nodes_map[n][m]; // map of closed (tried-out) nodes
 static int open_nodes_map[n][m]; // map of open (not-yet-tried) nodes
 static int dir_map[n][m]; // map of directions
@@ -118,7 +118,7 @@ string pathFind( const int & xStart, const int & yStart,
     // A* search
     while(!pq[pqi].empty())
     {
-        cout << "not empty" << endl;
+        //cout << "not empty" << endl;
         // get the current node w/ the highest priority
         // from the list of open nodes
         
@@ -160,7 +160,7 @@ string pathFind( const int & xStart, const int & yStart,
         for(i=0;i<dir;i++)
         {
             xdx=x+dx[i]; ydy=y+dy[i];
-            if(!(xdx<0 || xdx>n-1 || ydy<0 || ydy>m-1 || mapA[xdx][ydy]==1
+            if(!(xdx<0 || xdx>n-1 || ydy<0 || ydy>m-1 || mapA[xdx][ydy]==1 //edge
                  || closed_nodes_map[xdx][ydy]==1))
             {
                 // generate a child node

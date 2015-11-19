@@ -112,7 +112,7 @@ int main (int argc, char * const argv[]) {
     cv :: namedWindow("result");
     cv :: imshow ("result", image);
     cv :: waitKey (0);
-		Point robotShoot;
+	Point robotShoot;
 
 	//Seed random number generator
 	srand(time(NULL));
@@ -130,10 +130,9 @@ int main (int argc, char * const argv[]) {
 	//initialize sonar
 	SonarInit();
 
-	//initialize drive
-	DriveController uDrive;
-
+	
    while(1){
+
     codeChar = (char)cv::waitKey(100);      
 		RobotCenter.x = pos.x + RobotSize/2;
 		RobotCenter.y = pos.y + RobotSize/2; 
