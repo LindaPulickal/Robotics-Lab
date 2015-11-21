@@ -13,6 +13,7 @@
 #include "drive.h"
 #include "sonar.h"
 #include "raycaster.h"
+#include <wiringPi.h>
 #include <math.h>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
@@ -25,7 +26,7 @@ int RobotSize = 50;
 Point RobotCenter;
 int angleRot = 0;
 int angle = 90;
-int NUM_PARTICLES = 1000;
+int NUM_PARTICLES = 30;
 int DIS_VARIANCE = 5;
 int ANG_VARIANCE = 0;
 int DISTANCE = 5;
@@ -71,7 +72,7 @@ void rotateRobot(cv::Mat& src, cv::Mat& dst) {
 			angle = 360 + angle;
 		}
     angle = angle % 360; 
-		rotateImage(src, angleRot, dst);
+	//	rotateImage(src, angleRot, dst);
 		for(int i=0; i<NUM_PARTICLES; i++){
 			//cout << "particleOldAng: " << vParticles[i].getAngle() << endl;			
 			vParticles[i].setAngle(vParticles[i].getAngle() + angleRot);
@@ -111,7 +112,7 @@ int main (int argc, char * const argv[]) {
     cv :: namedWindow("result");
     cv :: imshow ("result", image);
     cv :: waitKey (0);
-		Point robotShoot;
+	Point robotShoot;
 
 	//Seed random number generator
 	srand(time(NULL));
@@ -123,34 +124,33 @@ int main (int argc, char * const argv[]) {
 
 	//create particles
 	for(int i=0; i<NUM_PARTICLES; i++){
-		vParticles.push_back(Particle(Point(rand() % BOXSIZE + 1, rand() % BOXSIZE + 1), (double)(rand() % 360 + 1), 1.0));
+		vParticles.push_back(Particle(Point(rand() % BOXSIZE + 1, rand() % BOXSIZE + 1), 0.0, 1.0));//((rand() % 360)*0+90 + 1), 1.0));
 	}
 
 	//initialize sonar
 	SonarInit();
 
-	//initialize drive
-	DriveController uDrive;
-
+	
    while(1){
+
     codeChar = (char)cv::waitKey(100);      
 		RobotCenter.x = pos.x + RobotSize/2;
 		RobotCenter.y = pos.y + RobotSize/2; 
 
     if (codeChar == 'w') { //up arrow
 	    moveRobot(pos, DISTANCE);   
-	    uDrive.DriveLinear(5);    
+	    uDrive.DriveDistance(5);    
 		}
 		if (codeChar == 's'){ //down arrow
 			moveRobot(pos, -DISTANCE);
-			uDrive.DriveLinear(-5);
+			uDrive.DriveDistance(-5);
 		}
-		else{
-	    uDrive.DriveLinear(0);
-		}
+	//	else{
+	 //   uDrive.DriveDistance(5);
+	//	}
         
     if (codeChar == 'i') {
-	    robotShoot = getIntersectionWithWall(RobotCenter, angle);
+	   // robotShoot = getIntersectionWithWall(RobotCenter, angle);
 	    //int distance = distToEdge(RobotCenter, robotShoot);
 			//cout << "distance: " << distance << endl;
 	    int distance = SonarGetCM();
@@ -158,22 +158,34 @@ int main (int argc, char * const argv[]) {
       	particlesShoots[i] = getIntersectionWithWall(vParticles[i].getPosition(), vParticles[i].getAngle());
 	    }
 	    updateProbability(vParticles, particlesShoots, distance); 
-			vParticles = resampleParticles(vParticles);
+		//	vParticles = resampleParticles(vParticles);
     }
 		if (codeChar == 'r'){
 			vParticles = resampleParticles(vParticles);
 		}
     if (codeChar == 'a') { //left arrow
-      angleRot = 45;
+      angleRot = -90;
       rotateRobot(logo, logo);
-	  	//uDrive.DriveTurn(90);
+	//DriveRotational(10);
+	  	uDrive.DriveTurn(-90);
     }    
     if (codeChar == 'd') { //right arrow
-      angleRot = -45;
+      angleRot = 90;
       rotateRobot(logo, logo);
-	  	//uDrive.DriveTurn(90);
+     //DriveRotational(-10);
+	  	uDrive.DriveTurn(90);
     }
-        
+    if (codeChar  == 'j') {
+	angleRot = 45;
+	rotateRobot(logo, logo);
+	uDrive.turnSonar(angle);
+	}    
+    if (codeChar  == 'k') {
+	angleRot = -45;
+	rotateRobot(logo, logo);
+	uDrive.turnSonar(angle);
+	}    
+
     if (draw) {
 	    image = Mat::zeros(BOXSIZE, BOXSIZE, CV_8UC3); 
       drawMap(image, edges, doors, docks, arcReactorLoc);
@@ -216,7 +228,7 @@ void updateProbability(std::vector<Particle> &particles, std::vector<cv::Point> 
         old_probabilities = particles[i].getWeight(); //P(robot@location)
         new_weight = old_probabilities * new_probability; //P(Sensor Reading| Robot @ Location) * P(robot@location)
         particles[i].setWeight(new_weight);
-				cout << "new_weight: " << new_weight << endl;
+	//			cout << "new_weight: " << new_weight << endl;
         total_probabilities += new_weight; //Ex: 0.25 + 0.25 + 0.3 = 0.8, so N = 1/0.8
     }
     

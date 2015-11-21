@@ -10,7 +10,6 @@
 #include <opencv2/legacy/legacy.hpp>
 #include "Util.h"
 #include "Particle.h"
-#include "drive.h"
 #include "sonar.h"
 #include "raycaster.h"
 #include <wiringPi.h>
@@ -18,7 +17,8 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 #include "A_Star.h"
-
+#include "navigation.h"
+#include "localize.h"
 
 using namespace cv;
 using namespace std;
@@ -30,7 +30,7 @@ Point goal_blueLab;
 Point goal_redLab;
 
 const int GRIDSIZE 30
-const int BOXSIZE = 301;
+/*const int BOXSIZE = 301;
 int RobotSize = 50;
 Point RobotCenter;
 int angleRot = 0;
@@ -44,9 +44,9 @@ std::vector<Point> particlesShoots;
 std::vector<Point > edges;
 std::vector<Point > doors;
 std::vector<Point > docks;
-Mat image;
+Mat image; */
 
-int goToGoal(Point, currLoc, Point goalLoc){
+int goToGoal(Point currLoc, Point goalLoc){
 	string path = pathFind(currLoc.x currLoc.y, goalLoc.x ,goalLoc.y);
 	for(char i=0; i<path.length(); i++) {
 		int dir = path[i] - '0';
@@ -61,8 +61,8 @@ int main(){
 	Point currLoc = localize();
 	goToGoal(currLoc, goal_definiteVirus);
 	currLoc = goal_definiteVirus;
-	//check color
-	if (color == RED) {
+	//write code to check color
+	/*if (color == RED) {
 		goToGoal(currLoc, goal_redLab);	
 		currLoc = goal_redLab;
 	}
@@ -85,7 +85,7 @@ int main(){
 	else {
 		goToGoal(currLoc, goal_blueLab);
 		currLoc = goal_blueLab;		
-	}
+	}*/
 
 	return 0;
 }

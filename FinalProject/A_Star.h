@@ -11,7 +11,21 @@ using namespace std;
 
 const int n=11; // horizontal size of the map
 const int m=13; // vertical size size of the map
-static int mapA[n][m] = {};
+static int map[m][n] = {
+    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+    {1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1},
+    {1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1},
+    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+    {1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1},
+    {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
+    {1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1},
+    {1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1},
+    {1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1},
+    {1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1},
+    {1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1},
+    {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
+    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},  
+};
 static int closed_nodes_map[n][m]; // map of closed (tried-out) nodes
 static int open_nodes_map[n][m]; // map of open (not-yet-tried) nodes
 static int dir_map[n][m]; // map of directions
