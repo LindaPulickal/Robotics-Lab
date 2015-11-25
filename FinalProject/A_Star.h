@@ -11,7 +11,7 @@ using namespace std;
 
 const int n=11; // horizontal size of the map
 const int m=13; // vertical size size of the map
-static int map[m][n] = {
+static int mapA[m][n] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1},
     {1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1},

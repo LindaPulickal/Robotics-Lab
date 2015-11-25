@@ -3,10 +3,13 @@
 
 CMakeFiles/particle.dir/main.cpp.o
  ../wiringPi/wiringPi/wiringPi.h
+ /home/pi/FinalProject/A_Star.h
  /home/pi/FinalProject/Particle.h
  /home/pi/FinalProject/Util.h
  /home/pi/FinalProject/Util_Map.h
  /home/pi/FinalProject/drive.h
+ /home/pi/FinalProject/localize.h
  /home/pi/FinalProject/main.cpp
+ /home/pi/FinalProject/navigation.h
  /home/pi/FinalProject/raycaster.h
  /home/pi/FinalProject/sonar.h

@@ -8,6 +8,20 @@
 
 ../wiringPi/wiringPi/wiringPi.h
 
+/home/pi/FinalProject/A_Star.h
+iostream
+-
+iomanip
+-
+queue
+-
+string
+-
+math.h
+-
+ctime
+-
+
 /home/pi/FinalProject/Particle.h
 iostream
 -
@@ -82,6 +96,10 @@ stdlib.h
 wiringPi.h
 -
 
+/home/pi/FinalProject/localize.h
+Util.h
+/home/pi/FinalProject/Util.h
+
 /home/pi/FinalProject/main.cpp
 iostream
 -
@@ -103,12 +121,8 @@ opencv2/video/tracking.hpp
 -
 opencv2/legacy/legacy.hpp
 -
-Util.h
-/home/pi/FinalProject/Util.h
 Particle.h
 /home/pi/FinalProject/Particle.h
-drive.h
-/home/pi/FinalProject/drive.h
 sonar.h
 /home/pi/FinalProject/sonar.h
 raycaster.h
@@ -121,6 +135,18 @@ stdlib.h
 -
 time.h
 -
+A_Star.h
+/home/pi/FinalProject/A_Star.h
+navigation.h
+/home/pi/FinalProject/navigation.h
+localize.h
+/home/pi/FinalProject/localize.h
+
+/home/pi/FinalProject/navigation.h
+math.h
+-
+drive.h
+/home/pi/FinalProject/drive.h
 
 /home/pi/FinalProject/raycaster.h
 iostream

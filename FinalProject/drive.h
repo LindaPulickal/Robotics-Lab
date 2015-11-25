@@ -64,18 +64,20 @@ public:
     }
 		
 		void DriveTurn(float theta){
-			printf("Angle:%f", theta);
-				fflush(stdout);
+			//printf("Angle:%f", theta);
+			//	fflush(stdout);
 			DriveLinear(0);
-			DriveRotational(theta/2);
-			delay(500);
+			cout<<"\ntheta"<<theta;
+			DriveRotational(theta/4);
+			delay(600);
 			DriveRotational(0);
 		}
 		
 		void DriveDistance(float distanceCM){
+			cout<<"\ndistance"<<distanceCM;
 			DriveRotational(0);
-			DriveLinear(distanceCM);
-			delay(500);
+			DriveLinear(5);
+			delay(distanceCM*1000/15);
 			DriveLinear(0);
 			
 		}

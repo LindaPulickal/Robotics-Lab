@@ -1,4 +1,6 @@
-
+#include "Util.h"
+#define NUM_PARTICLES 30
+#define BOXSIZE 301
 
 #define drawCross( center, color, d )                  \
 line( image, cv::Point( center.x - d, center.y - d ),           \
@@ -8,34 +10,7 @@ cv::Point( center.x - d, center.y + d ), color, 2, CV_AA, 0 )
 
 std::vector<Particle> vParticles;
 std::vector<Point> particlesShoots;
-
-void localize(Point& currPoint, int& angle) {
-    srand(time(NULL));
-
-	//create particleShoots
-	for(int i=0; i<NUM_PARTICLES; i++){
-		particlesShoots.push_back(Point(0, 0));
-	}
-
-	//create particles
-	for(int i=0; i<NUM_PARTICLES; i++){
-		vParticles.push_back(Particle(Point(rand() % BOXSIZE + 1, rand() % BOXSIZE + 1), 0.0, 1.0));//((rand() % 360)*0+90 + 1), 1.0));
-	}
-
-	SonarInit(); //initialize sonar
-
-   	while(1){
-		int distance = SonarGetCM();
-		for(int i=0; i<NUM_PARTICLES; i++){
-      		particlesShoots[i] = getIntersectionWithWall(vParticles[i].getPosition(), vParticles[i].getAngle());
-	    }
-	    updateProbability(vParticles, particlesShoots, distance); 
-		vParticles = resampleParticles(vParticles);
-		if (getPosition(currPoint, angle))
-			break;
-	}		
-    
-}
+std::vector<Point> edges, docks;
 
 bool getPosition(Point &location, int & angle) {
 	int Rx = 0, Ry = 0, Rt = 0, Vx = 0, Vy = 0, Vt = 0;
@@ -152,5 +127,33 @@ std::vector<Particle> resampleParticles(std::vector<Particle>& oldParticles) {
 
     
     return newParticles;
+}
+
+void localize(Point& currPoint, int& angle) {
+    srand(time(NULL));
+
+	//create particleShoots
+	for(int i=0; i<NUM_PARTICLES; i++){
+		particlesShoots.push_back(Point(0, 0));
+	}
+
+	//create particles
+	for(int i=0; i<NUM_PARTICLES; i++){
+		vParticles.push_back(Particle(Point(rand() % BOXSIZE + 1, rand() % BOXSIZE + 1), 0.0, 1.0));//((rand() % 360)*0+90 + 1), 1.0));
+	}
+
+	SonarInit(); //initialize sonar
+
+   	while(1){
+		int distance = SonarGetCM();
+		for(int i=0; i<NUM_PARTICLES; i++){
+      		particlesShoots[i] = getIntersectionWithWall(vParticles[i].getPosition(), vParticles[i].getAngle());
+	    }
+	    updateProbability(vParticles, particlesShoots, distance); 
+		vParticles = resampleParticles(vParticles);
+		if (getPosition(currPoint, angle))
+			break;
+	}		
+    
 }
 

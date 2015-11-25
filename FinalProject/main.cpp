@@ -1,14 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <opencv2/opencv.hpp>
-#include <opencv2/core/core.hpp>
 #include "Util_Map.h"
-#include <opencv/highgui.h>
-#include <opencv/cv.h>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/video/tracking.hpp>
-#include <opencv2/legacy/legacy.hpp>
-#include "Util.h"
 #include "Particle.h"
 #include "sonar.h"
 #include "raycaster.h"
@@ -23,42 +15,50 @@
 using namespace cv;
 using namespace std;
 
-Point goal_definiteVirus;
-Point goal_possibleVirus1;
+class Point {
+public:
+	int x;
+	int y;
+	Point(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+};
+
+
+Point goal_possibleVirus1(1,5);
 Point goal_possibleVirus2;
+Point goal_possibleVirus3;
 Point goal_blueLab;
 Point goal_redLab;
 
-const int GRIDSIZE 30
-/*const int BOXSIZE = 301;
+const int GRIDSIZE = 30;
 int RobotSize = 50;
-Point RobotCenter;
 int angleRot = 0;
 int angle = 90;
-int NUM_PARTICLES = 30;
 int DIS_VARIANCE = 5;
 int ANG_VARIANCE = 0;
 int DISTANCE = 5;
-std::vector<Particle> vParticles;
-std::vector<Point> particlesShoots;
-std::vector<Point > edges;
-std::vector<Point > doors;
-std::vector<Point > docks;
-Mat image; */
+Point RobotCenter;
 
 int goToGoal(Point currLoc, Point goalLoc){
-	string path = pathFind(currLoc.x currLoc.y, goalLoc.x ,goalLoc.y);
+	float angle = 90;
+	string path = pathFind(currLoc.x, currLoc.y , goalLoc.x ,goalLoc.y);
 	for(char i=0; i<path.length(); i++) {
 		int dir = path[i] - '0';
-		Point nextLoc(currLoc.x + dx[i]*GRIDSIZE, currLoc.y + dy[i]*GRIDSIZE);
-		moveTo(currLoc, nextLoc);
+		Point nextLoc(currLoc.x + dx[dir]*GRIDSIZE, currLoc.y + dy[dir]*GRIDSIZE);
+		moveTo(currLoc, angle, nextLoc, dir);
 		currLoc = nextLoc;
 	}
 }
 
 int main(){
 	//fill mapA : 1 corresponds to edges , 0 corresponds to gates
-	Point currLoc = localize();
+	//DriveController uDrive;
+	//uDrive.DriveDistance(30);
+	Point currLoc(30,30);
+	int currAngle = 270;
+	//localize(currLoc, currAngle);
 	goToGoal(currLoc, goal_definiteVirus);
 	currLoc = goal_definiteVirus;
 	//write code to check color
