@@ -1,0 +1,1 @@
+/usr/bin/c++       CMakeFiles/tron.dir/wall.cpp.o  -o tron -rdynamic -L../wiringPi/wiringPi -lwiringPi -Wl,-rpath,../wiringPi/wiringPi 
