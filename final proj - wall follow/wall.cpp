@@ -30,15 +30,15 @@ void initializeControls() {
 
 int moveTo(Point currPoint, float &currAngle, Point wayPoint, int direction){
 	float angleRotate = currAngle;
-	if(direction == 0)
+	if(direction == 0) //move down
 		angleRotate = 90 - currAngle;
-	if(direction == 1)
+	if(direction == 1) //move left 
 		angleRotate = 0 - currAngle;
-	if(direction == 2)
+	if(direction == 2) //move up
 		angleRotate = -90  - currAngle;
-	if(direction == 3)
+	if(direction == 3) // move right
 		angleRotate =  currAngle - 0;
-	driver.DriveTurn(angleRotate);
+	driver.DriveTurn(angleRotate); // when anglerotate is negative it is left turn
 	currAngle += angleRotate;
 	
 	float pidOut, distanceLeft, distanceRight;
@@ -72,8 +72,8 @@ int moveTo(Point currPoint, float &currAngle, Point wayPoint, int direction){
 	//driver.DriveDistance((float)(sqrt(pow((double)(wayPoint.x - currPoint.x), 2) + pow((double)(wayPoint.y - currPoint.y), 2))));
 }
 
-int goToGoal(Point currLoc, Point goalLoc, float angle){
-	//angle = 90;
+int goToGoal(Point currLoc, Point goalLoc, float& angle){
+	angle = 90; //assumes that the robot is always facing down when it starts
 	string path = pathFind(currLoc.x, currLoc.y , goalLoc.x ,goalLoc.y);
 	cout<<"path = "<<path;
 	for(char i=0; i<path.length(); i++) {
@@ -112,7 +112,7 @@ int main() {
     Point goal_LabB(10,9);
 
     Point currLoc(1,1);
-	float angle = 90;
+    float angle;
     for(int i =0; i<3; i++) {
     	    if (LAB_A_REACHED && LAB_B_REACHED)
     			break;
@@ -120,12 +120,7 @@ int main() {
             goToGoal(currLoc, goal_VirusLocs[i], angle);
             int virusStatus = getVirus();
             currLoc = goal_VirusLocs[i]; 
-            driver.DriveTurn(90);
-	//	exit(0);
-	    if(i == 0)
-		angle = 180;
-	    if (i == 1) 
-		angle = 0; 
+            driver.align90(angle);
             if (virusStatus == 0) {
                     continue;
             }
@@ -134,16 +129,14 @@ int main() {
             	VIRUS_A_FOUND = true;
             	goToGoal(currLoc, goal_LabA, angle);
             	LAB_A_REACHED = true;
-		driver.DriveTurn(180);
-		angle = 90;
+		driver.align90(angle);
             }
 			
 	else if (virusStatus == 2) {
             	VIRUS_B_FOUND = true;
             	goToGoal(currLoc, goal_LabB, angle);
             	LAB_B_REACHED = true;
-		driver.DriveTurn(180);
-		angle = 90;		
+		driver.align90(angle);		
             }
 
     }
