@@ -69,4 +69,8 @@ public:
 	delay(distanceCM*1000/15);
 	DriveLinear(0);
     }
+    
+    void align90(float angle) {
+    	DriveRotational(90-angle);
+    }
 };
